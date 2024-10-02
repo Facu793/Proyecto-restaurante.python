@@ -7,6 +7,7 @@ class LoginGUI:
         self.master = master
         master.title("Login")
         master.iconbitmap("D:\\Usuario\\Desktop\\Itec-Materias\\2do año Itec-2024\\Itec-Programacion I\\T.P Anual Pogramacion 1\\pizza_0vQ_icon.ico")
+        master.configure(bg="light green")
 
         # Crear los widgets
         self.lbl_nombre = tk.Label(master, text="Nombre de usuario:")

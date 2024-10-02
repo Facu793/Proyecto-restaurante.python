@@ -17,24 +17,32 @@ class MesasGUI:
     def __init__(self, master):
         self.master = master
         master.title("Mesas Disponibles")
-        master.geometry("800x940")
+        master.geometry("800x700")
         master.iconbitmap("D:\\Usuario\\Desktop\\Itec-Materias\\2do año Itec-2024\\Itec-Programacion I\\T.P Anual Pogramacion 1\\Icono administrador.ico")
 
         # Frame para las mesas
-        self.frame_mesas = tk.Frame(master, bg="lightgrey")
+        self.frame_mesas = tk.Frame(master, bg="light green")
         self.frame_mesas.place(relwidth=1, relheight=0.8)
 
-        # Botones para añadir, eliminar y modificar mesa
-        self.btn_add_mesa = tk.Button(master, text="Añadir Mesa", command=self.abrir_ventana_anadir_mesa)
-        self.btn_add_mesa.pack(side=tk.LEFT, padx=10, pady=10)
+        # Frame para los botones en la parte inferior
+        self.frame_botones = tk.Frame(master)
+        self.frame_botones.place(relwidth=1, rely=0.8, relheight=0.2)
 
-        self.btn_delete_mesa = tk.Button(master, text="Eliminar Mesa Seleccionada",
-                                         command=self.eliminar_mesa_seleccionada)
-        self.btn_delete_mesa.pack(side=tk.LEFT, padx=10, pady=10)
+        # Botones para añadir, eliminar y modificar mesa, ubicados en el frame_botones
+        self.btn_add_mesa = tk.Button(self.frame_botones, text="Añadir Mesa", command=self.abrir_ventana_anadir_mesa)
+        self.btn_add_mesa.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        self.btn_add_mesa.configure(bg='green', fg='black')
 
-        self.btn_modificar_mesa = tk.Button(master, text="Modificar Mesa Seleccionada",
+        self.btn_modificar_mesa = tk.Button(self.frame_botones, text="Modificar Mesa Seleccionada",
                                             command=self.abrir_ventana_modificar_mesa)
-        self.btn_modificar_mesa.pack(side=tk.LEFT, padx=10, pady=10)
+        self.btn_modificar_mesa.grid(row=0, column=1, padx=10, pady=10)
+        self.btn_modificar_mesa.configure(bg='yellow', fg='black')
+
+        self.btn_delete_mesa = tk.Button(self.frame_botones, text="Eliminar Mesa Seleccionada",
+                                         command=self.eliminar_mesa_seleccionada)
+        self.btn_delete_mesa.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+        self.btn_delete_mesa.configure(bg='red', fg='black')
+
 
         # Lista para almacenar las mesas
         self.mesas = []
@@ -199,7 +207,8 @@ class MesasGUI:
 
         self.ventana_modificar_mesa = tk.Toplevel(self.master)
         self.ventana_modificar_mesa.title("Modificar Mesa")
-        self.ventana_modificar_mesa.iconbitmap("D:\\Usuario\\Desktop\\Itec-Materias\\2do año Itec-2024\\Itec-Programacion I\\T.P Anual Pogramacion 1\\modificar mesa.ico")
+        self.ventana_modificar_mesa.iconbitmap(
+            "D:\\Usuario\\Desktop\\Itec-Materias\\2do año Itec-2024\\Itec-Programacion I\\T.P Anual Pogramacion 1\\modificar mesa.ico")
 
         # Ver el texto de la mesa seleccionada para depuración
         texto_mesa = self.mesa_seleccionada.cget("text")
@@ -207,41 +216,43 @@ class MesasGUI:
 
         # Ahora el texto tiene 4 líneas: número, cliente, ubicación, estado, capacidad
         try:
-            numero_actual, cliente_actual, ubicacion_actual,estado_actual, capacidad_actual = texto_mesa.split("\n")
+            numero_actual, cliente_actual, ubicacion_actual, estado_actual, capacidad_actual = texto_mesa.split("\n")
+
+            # Obtener los valores actuales y eliminar etiquetas
             numero_actual = numero_actual.replace("Mesa ", "").strip()  # Obtener el número de mesa
             cliente_actual = cliente_actual.replace("Cliente: ", "").strip()  # Obtener el cliente
             ubicacion_actual = ubicacion_actual.replace("Ubicación: ", "").strip()  # Obtener la ubicación
-            estado_actual= estado_actual.replace("Estado: ","").strip() #Obtener el estado de la mesa
+            estado_actual = estado_actual.replace("Estado: ", "").strip()  # Obtener el estado de la mesa
             capacidad_actual = capacidad_actual.replace("Capacidad: ", "").strip()  # Obtener la capacidad
         except ValueError:
             messagebox.showerror("Error", "El formato del texto de la mesa seleccionada no es el esperado.")
             return
 
-        # Crear campos de entrada para los valores actuales
+        # Crear campos de entrada vacíos para los valores actuales
         tk.Label(self.ventana_modificar_mesa, text="Número de mesa:").grid(row=0, column=0, padx=10, pady=10)
         self.entry_modificar_numero = tk.Entry(self.ventana_modificar_mesa)
         self.entry_modificar_numero.grid(row=0, column=1, padx=10, pady=10)
-        self.entry_modificar_numero.insert(0, numero_actual)
+        self.entry_modificar_numero.insert(0, "")  # Dejar vacío para que el usuario ingrese nuevo valor
 
         tk.Label(self.ventana_modificar_mesa, text="Nombre cliente:").grid(row=1, column=0, padx=10, pady=10)
         self.entry_modificar_cliente = tk.Entry(self.ventana_modificar_mesa)
         self.entry_modificar_cliente.grid(row=1, column=1, padx=10, pady=10)
-        self.entry_modificar_cliente.insert(0, cliente_actual)
+        self.entry_modificar_cliente.insert(0, "")  # Dejar vacío para que el usuario ingrese nuevo valor
 
         tk.Label(self.ventana_modificar_mesa, text="Ubicación:").grid(row=2, column=0, padx=10, pady=10)
         self.entry_modificar_ubicacion = tk.Entry(self.ventana_modificar_mesa)
         self.entry_modificar_ubicacion.grid(row=2, column=1, padx=10, pady=10)
-        self.entry_modificar_ubicacion.insert(0, ubicacion_actual)
+        self.entry_modificar_ubicacion.insert(0, "")  # Dejar vacío para que el usuario ingrese nuevo valor
 
         tk.Label(self.ventana_modificar_mesa, text="Estado de la mesa:").grid(row=3, column=0, padx=10, pady=10)
         self.entry_modificar_estado = tk.Entry(self.ventana_modificar_mesa)
         self.entry_modificar_estado.grid(row=3, column=1, padx=10, pady=10)
-        self.entry_modificar_estado.insert(0, estado_actual)
+        self.entry_modificar_estado.insert(0, "")  # Dejar vacío para que el usuario ingrese nuevo valor
 
         tk.Label(self.ventana_modificar_mesa, text="Capacidad de la mesa:").grid(row=4, column=0, padx=10, pady=10)
         self.entry_modificar_capacidad = tk.Entry(self.ventana_modificar_mesa)
         self.entry_modificar_capacidad.grid(row=4, column=1, padx=10, pady=10)
-        self.entry_modificar_capacidad.insert(0, capacidad_actual)
+        self.entry_modificar_capacidad.insert(0, "")  # Dejar vacío para que el usuario ingrese nuevo valor
 
         btn_confirmar = tk.Button(self.ventana_modificar_mesa, text="Guardar Cambios", command=self.modificar_mesa)
         btn_confirmar.grid(row=5, columnspan=2, pady=10)
@@ -273,7 +284,3 @@ class MesasGUI:
             )
             self.ventana_modificar_mesa.destroy()
 
-# Iniciar la aplicación
-root = tk.Tk()
-login_gui = MesasGUI(root)
-root.mainloop()
