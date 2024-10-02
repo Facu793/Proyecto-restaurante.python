@@ -107,6 +107,7 @@ class MesasGUI:
         """Abre una ventana emergente para añadir una nueva mesa con su número y capacidad"""
         self.ventana_anadir_mesa = tk.Toplevel(self.master)
         self.ventana_anadir_mesa.title("Añadir Mesa")
+        self.ventana_anadir_mesa.iconbitmap("D:\\Usuario\\Desktop\\Itec-Materias\\2do año Itec-2024\\Itec-Programacion I\\T.P Anual Pogramacion 1\\mesa añadir mesa-icon.ico")
 
         tk.Label(self.ventana_anadir_mesa, text="Número de mesa:").grid(row=0, column=0, padx=10, pady=10)
         self.entry_numero_mesa = tk.Entry(self.ventana_anadir_mesa)
@@ -198,6 +199,7 @@ class MesasGUI:
 
         self.ventana_modificar_mesa = tk.Toplevel(self.master)
         self.ventana_modificar_mesa.title("Modificar Mesa")
+        self.ventana_modificar_mesa.iconbitmap("D:\\Usuario\\Desktop\\Itec-Materias\\2do año Itec-2024\\Itec-Programacion I\\T.P Anual Pogramacion 1\\modificar mesa.ico")
 
         # Ver el texto de la mesa seleccionada para depuración
         texto_mesa = self.mesa_seleccionada.cget("text")
@@ -271,3 +273,7 @@ class MesasGUI:
             )
             self.ventana_modificar_mesa.destroy()
 
+# Iniciar la aplicación
+root = tk.Tk()
+login_gui = MesasGUI(root)
+root.mainloop()

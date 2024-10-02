@@ -117,3 +117,7 @@ class MesasClienteGUI:
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
         self.cargar_mesas_desde_bd()
+# Iniciar la aplicación
+root = tk.Tk()
+login_gui = MesasClienteGUI(root)
+root.mainloop()
