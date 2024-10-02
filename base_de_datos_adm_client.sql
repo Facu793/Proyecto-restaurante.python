@@ -1,0 +1,1 @@
+SELECT * FROM reserva_restaurante.mesas;
