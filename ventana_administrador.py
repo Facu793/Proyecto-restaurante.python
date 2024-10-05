@@ -262,7 +262,7 @@ class MesasGUI:
         nuevo_numero = self.entry_modificar_numero.get()
         nuevo_cliente = self.entry_modificar_cliente.get()
         nueva_ubicacion = self.entry_modificar_ubicacion.get()
-        nuevo_estado_mesa=self.entry_modificar_estado.get()
+        nuevo_estado_mesa = self.entry_modificar_estado.get()
         nueva_capacidad = self.entry_modificar_capacidad.get()
 
         if nuevo_numero and nuevo_numero.isdigit() and nueva_capacidad and nueva_capacidad.isdigit():
@@ -272,15 +272,27 @@ class MesasGUI:
                     messagebox.showerror("Error", f"Ya existe una mesa con el número {nuevo_numero}.")
                     return
 
-            # Actualizar en la base de datos
+            # Obtener el id_mesa actual en lugar de usar numero_actual
             numero_actual = self.mesa_seleccionada.cget("text").split("\n")[0].replace("Mesa ", "")
-            query = "UPDATE mesas SET nombre_cliente=%s, ubicacion=%s, estado=%s, cantidad_personas=%s WHERE id_mesa=%s;"
-            base_datos.execute(query, (nuevo_cliente, nueva_ubicacion,nuevo_estado_mesa, nueva_capacidad,numero_actual))
-            conectar.commit()
+            query_id = "SELECT id_mesa FROM mesas WHERE numero_mesa = %s;"
+            base_datos.execute(query_id, (numero_actual,))
+            resultado = base_datos.fetchone()
 
-            # Actualizar en la interfaz
-            self.mesa_seleccionada.config(
-                text=f"Mesa {nuevo_numero}\nNombre de cliente: {nuevo_cliente}\nUbicación: {nueva_ubicacion}\n Estado de la mesa: {nuevo_estado_mesa}\nCapacidad: {nueva_capacidad}"
-            )
-            self.ventana_modificar_mesa.destroy()
+            if resultado:
+                id_mesa = resultado[0]
+
+                # Actualizar en la base de datos usando id_mesa
+                query = "UPDATE mesas SET numero_mesa=%s, nombre_cliente=%s, ubicacion=%s, estado=%s, cantidad_personas=%s WHERE id_mesa=%s;"
+                base_datos.execute(query, (
+                nuevo_numero, nuevo_cliente, nueva_ubicacion, nuevo_estado_mesa, nueva_capacidad, id_mesa))
+                conectar.commit()
+
+                # Actualizar en la interfaz
+                self.mesa_seleccionada.config(
+                    text=f"Mesa {nuevo_numero}\nNombre de cliente: {nuevo_cliente}\nUbicación: {nueva_ubicacion}\nEstado de la mesa: {nuevo_estado_mesa}\nCapacidad: {nueva_capacidad}"
+                )
+                self.ventana_modificar_mesa.destroy()
+            else:
+                messagebox.showerror("Error", "No se encontró el ID de la mesa en la base de datos.")
+
 
