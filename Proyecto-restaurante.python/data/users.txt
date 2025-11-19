@@ -1,0 +1,6 @@
+Nombre: Facundo
+Apellido: Cordoba
+Sexo: Masculino
+Rol: Admin
+Contraseña: 12345678
+-------------------
